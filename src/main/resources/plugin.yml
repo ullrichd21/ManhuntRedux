@@ -1,0 +1,20 @@
+name: ManhuntRedux
+version: ${project.version}
+main: me.fallenmoons.manhuntredux.Main
+api-version: 1.16
+authors: [ FallenMoons ]
+description: Manhunt Redux - Hunters vs Runners
+website: www.twitch.tv/fallenmoons
+commands:
+  hunter:
+    description: Adds or removes a player from the "Hunters" team.
+    usage: /<command> add/remove [PLAYER]
+  runner:
+    description: Adds or removes a player from the "Runners" team.
+    usage: /<command> add/remove [PLAYER]
+  clearteams:
+    description: Clears all players from all teams!
+    usage: /<command>
+  round:
+    description: Start/Stop game rounds.
+    usage: /<command> start/stop/set/view [time]/[countdown/leadtime] [time]
