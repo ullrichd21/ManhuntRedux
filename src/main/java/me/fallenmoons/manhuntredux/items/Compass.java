@@ -1,11 +1,13 @@
 package me.fallenmoons.manhuntredux.items;
 
 import me.fallenmoons.manhuntredux.Main;
+import me.fallenmoons.manhuntredux.core.PortalManager;
 import me.fallenmoons.manhuntredux.core.TeamManager;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
@@ -19,10 +21,12 @@ import java.util.List;
 public class Compass implements Listener {
     private Main main;
     private TeamManager teamManager;
+    private PortalManager portals;
 
     public Compass(Main main) {
         this.main = main;
         this.teamManager = main.getTeamManager();
+        this.portals = main.getPortals();
     }
 
     @EventHandler
@@ -48,12 +52,13 @@ public class Compass implements Listener {
                 ArrayList<Player> players = teamManager.getTeamPlayers("runners");
                 int num = 0;
                 if (players.size() > 0) {
-                    if (p.isSneaking()) {
+                    if (p.isSneaking() && e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
                         ItemMeta trackerMeta = i.getItemMeta();
                         //Lore
                         if (!trackerMeta.hasLore()) {
                             List<String> trackerLore = new ArrayList<String>();
                             trackerLore.add("0");
+                            trackerLore.add("Player Tracker");
                             trackerMeta.setLore(trackerLore);
                         } else {
                             num = Integer.parseInt(trackerMeta.getLore().get(0));
@@ -66,7 +71,7 @@ public class Compass implements Listener {
                         }
 
                         trackerMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + players.get(num).getDisplayName());
-                        trackerMeta.setLore(Arrays.asList(String.valueOf(num)));
+                        trackerMeta.setLore(Arrays.asList(String.valueOf(num), "Player Tracker"));
 
                         CompassMeta trackerCompassMeta = null;
                         if (trackerMeta instanceof CompassMeta) trackerCompassMeta = (CompassMeta) trackerMeta;
@@ -77,72 +82,48 @@ public class Compass implements Listener {
                         i.setItemMeta(trackerCompassMeta);
                         p.playSound(p.getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 1, 1);
                     } else {
-                        ItemMeta trackerMeta = i.getItemMeta();
-                        //Lore
-                        if (!trackerMeta.hasLore()) {
-                            List<String> trackerLore = new ArrayList<String>();
-                            trackerLore.add("0");
-                            trackerMeta.setLore(trackerLore);
-                        } else {
-                            num = Integer.parseInt(trackerMeta.getLore().get(0));
+                        if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                            ItemMeta trackerMeta = i.getItemMeta();
+                            //Lore
+                            if (!trackerMeta.hasLore()) {
+                                List<String> trackerLore = new ArrayList<String>();
+                                trackerLore.add("0");
+                                trackerLore.add("Player Tracker");
+                                trackerMeta.setLore(trackerLore);
+                            } else {
+                                num = Integer.parseInt(trackerMeta.getLore().get(0));
+                            }
+
+                            trackerMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + players.get(num).getDisplayName());
+                            trackerMeta.setLore(Arrays.asList(String.valueOf(num), "Player Tracker"));
+
+                            CompassMeta trackerCompassMeta = null;
+                            if (trackerMeta instanceof CompassMeta) trackerCompassMeta = (CompassMeta) trackerMeta;
+                            if(trackerCompassMeta != null) {
+                                trackerCompassMeta.setLodestoneTracked(false);
+
+                                if(!p.getWorld().getName().contains("_the_end") && players.get(num).getWorld().getName().contains("_the_end")) {
+                                    System.out.println("Portal Location: " + portals.getPortalCoords(players.get(num).getName()));
+                                    trackerCompassMeta.setLodestone(portals.getPortalCoords(players.get(num).getName()));
+                                    System.out.println("In the end!");
+                                } else {
+                                    System.out.println("Not in the end!");
+                                    trackerCompassMeta.setLodestone(players.get(num).getLocation());
+                                }
+                            }
+                            i.setItemMeta(trackerCompassMeta);
+
+                            if (players.get(num).getWorld() != p.getWorld()) {
+                                p.playSound(p.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1, 1);
+                            } else {
+                                p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                            }
                         }
-
-                        trackerMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + players.get(num).getDisplayName());
-                        trackerMeta.setLore(Arrays.asList(String.valueOf(num)));
-
-                        CompassMeta trackerCompassMeta = null;
-                        if (trackerMeta instanceof CompassMeta) trackerCompassMeta = (CompassMeta) trackerMeta;
-                        if(trackerCompassMeta != null) {
-                            trackerCompassMeta.setLodestoneTracked(false);
-                            trackerCompassMeta.setLodestone(players.get(num).getLocation());
-                        }
-                        i.setItemMeta(trackerCompassMeta);
-
-                        if (players.get(num).getWorld() != p.getWorld()) {
-                            p.playSound(p.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1, 1);
-                        } else {
-                            p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
-                        }
-
-
                     }
-
                 } else {
                     p.sendMessage(ChatColor.RED + "Not enough runners to track!");
                     return;
                 }
-
-
-//                ItemMeta meta = i.getItemMeta();
-//
-//                if (players.size() == 0) {
-//                    meta.setDisplayName(ChatColor.RED + "NO PLAYERS FOUND");
-//                    meta.setLore(Arrays.asList(String.valueOf(0)));
-//                    i.setItemMeta(meta);
-//                    return;
-//                }
-//
-//                int currentNum = Integer.parseInt(meta.getLore().get(0));
-//                currentNum++;
-//
-//                if (currentNum >= players.size()) {
-//                    currentNum = 0;
-//                }
-//
-//                CompassMeta compMeta = null;
-//
-//                if (meta instanceof CompassMeta) compMeta = (CompassMeta) meta;
-//                if (compMeta != null) {
-//                    compMeta.setLodestoneTracked(false);
-//                    compMeta.setLodestone(players.get(currentNum).getLocation());
-//                }
-//
-//                meta.setDisplayName(ChatColor.GOLD + ChatColor.stripColor(players.get(currentNum).getDisplayName()));
-//                meta.setLore(Arrays.asList(String.valueOf(currentNum)));
-//                i.setItemMeta(compMeta);
-
-
-
             }
         }
     }

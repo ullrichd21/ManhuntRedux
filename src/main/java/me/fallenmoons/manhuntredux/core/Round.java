@@ -8,6 +8,8 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 
 public class Round {
@@ -34,8 +36,8 @@ public class Round {
     public Round(Main main) {
         this.main = main;
         this.teamManager = main.getTeamManager();
-        this.roundCountdown = 10;
-        this.roundLeadTime = 15;
+        this.roundCountdown = 30;
+        this.roundLeadTime = 60;
         this.roundStarted = false;
         this.runnersCanMove = true;
         this.huntersCanMove = true;
@@ -106,6 +108,8 @@ public class Round {
         bar.setVisible(true);
         bar.removeAll();
 
+        boolean first = true;
+
         for (Player p : main.getServer().getOnlinePlayers()) {
             bar.addPlayer(p);
             p.playSound(p.getLocation(), Sound.UI_TOAST_IN, 100, 1);
@@ -116,6 +120,16 @@ public class Round {
             p.setFoodLevel(20);
             p.setExhaustion(0);
             p.getInventory().clear();
+            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 100));
+
+            if (first == true) {
+                p.getWorld().setTime(0);
+                p.getWorld().setStorm(false);
+                p.getWorld().setThundering(false);
+                first = false;
+            }
+
 
             if (teamManager.getTeamFromPlayer(p) == teamManager.getHunters()) {
                 p.getInventory().addItem(new ItemStack(Material.COMPASS, 1));
@@ -168,6 +182,12 @@ public class Round {
             countdownStarted = false;
             runnersCanMove = true;
 
+            for (Player p : teamManager.getRunners().getMembers()) {
+                for (PotionEffect pot : p.getActivePotionEffects()) {
+                    p.removePotionEffect(pot.getType());
+                }
+            }
+
             if (roundLeadTime > 0) {
                 startLeadCountdown();
             }
@@ -195,6 +215,12 @@ public class Round {
             countTask.cancel();
             leadCountdownStarted = false;
             huntersCanMove = true;
+
+            for (Player p : teamManager.getHunters().getMembers()) {
+                for (PotionEffect pot : p.getActivePotionEffects()) {
+                    p.removePotionEffect(pot.getType());
+                }
+            }
         }
     }
 }
