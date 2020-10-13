@@ -2,6 +2,7 @@ package me.fallenmoons.manhuntredux.commands;
 
 import me.fallenmoons.manhuntredux.Main;
 import me.fallenmoons.manhuntredux.core.Round;
+import me.fallenmoons.manhuntredux.core.TeamManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,10 +12,12 @@ import org.bukkit.entity.Player;
 public class RoundCommand implements CommandExecutor {
     private Main main;
     private Round round;
+    private TeamManager teamManager;
 
     public RoundCommand(Main main) {
         this.main = main;
         this.round = main.getRound();
+        this.teamManager = main.getTeamManager();
     }
 
     @Override
@@ -26,8 +29,13 @@ public class RoundCommand implements CommandExecutor {
             }
 
             if (args[0].toLowerCase().equals("start")) {
-                round.startRound();
-                sender.sendMessage(ChatColor.GREEN + "Starting round...");
+                if (teamManager.getRunners().getMembers().size() > 0 && teamManager.getHunters().getMembers().size() > 0) {
+                    round.startRound();
+                    sender.sendMessage(ChatColor.GREEN + "Starting round...");
+                } else {
+                    sender.sendMessage(ChatColor.RED + "There must be at least one player on each team to start round!");
+                }
+
             } else if (args[0].toLowerCase().equals("stop")) {
                 if (round.hasRoundStarted() == true) {
                     round.stopRound();
@@ -42,26 +50,26 @@ public class RoundCommand implements CommandExecutor {
                 //Check if valid number...
                 int num;
                 try {
-                    num = Integer.parseInt(args[2]);
+                    num = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
-                    sender.sendMessage(ChatColor.RED + "\"" + args[2] + "\" is not a valid number!");
+                    sender.sendMessage(ChatColor.RED + "\"" + args[1] + "\" is not a valid number!");
                     return false;
                 }
 
-                round.setRoundCountdown(Integer.parseInt(args[2]));
-                sender.sendMessage(ChatColor.GREEN + "Set round countdown to " + args[2] + " seconds.");
+                round.setRoundCountdown(Integer.parseInt(args[1]));
+                sender.sendMessage(ChatColor.GREEN + "Set round countdown to " + args[1] + " seconds.");
                 return true;
             } else if (args[0].toLowerCase().equals("leadtime")) {
                 //Check if valid number...
                 int num;
                 try {
-                    num = Integer.parseInt(args[2]);
+                    num = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
-                    sender.sendMessage(ChatColor.RED + "\"" + args[2] + "\" is not a valid number!");
+                    sender.sendMessage(ChatColor.RED + "\"" + args[1] + "\" is not a valid number!");
                     return false;
                 }
-                round.setRoundLeadTime(Integer.parseInt(args[2]));
-                sender.sendMessage(ChatColor.RED + "\"" + args[2] + "\" is not a valid number!");
+                round.setRoundLeadTime(Integer.parseInt(args[1]));
+                sender.sendMessage(ChatColor.GREEN + "Set round lead time to " + args[1] + " seconds.");
                 return true;
             } else {
                 return false;

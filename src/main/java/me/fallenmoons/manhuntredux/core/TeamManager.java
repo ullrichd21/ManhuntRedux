@@ -91,6 +91,13 @@ public class TeamManager {
         return null;
     }
 
+    public boolean playerOnTeam(Player player) {
+        if (!hunters.getMembers().contains(player) && !runners.getMembers().contains(player)) {
+            return false;
+        }
+        return true;
+    }
+
     public Team getHunters() {
         return hunters;
     }

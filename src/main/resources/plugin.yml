@@ -3,7 +3,7 @@ version: ${project.version}
 main: me.fallenmoons.manhuntredux.Main
 api-version: 1.16
 authors: [ FallenMoons ]
-description: Manhunt Redux - Hunters vs Runners
+description: Manhunt Redux - Hunters vs Runners (Special thanks to dancemidget1, Hjoll, Brightglow, ColinSmoke, treester, anageds, JamFlam)
 website: www.twitch.tv/fallenmoons
 commands:
   hunter:
@@ -16,5 +16,16 @@ commands:
     description: Clears all players from all teams!
     usage: /<command>
   round:
-    description: Start/Stop game rounds.
-    usage: /<command> start/stop/set/view [time]/[countdown/leadtime] [time]
+    description: Start/Stop and modify game rounds.
+    usage: /<command> start/stop/view/countdown/leadtime [time]
+  randomizeteams:
+    description: Randomize all teams.
+    usage: /<command>
+  coordinates:
+    description: Sends your current coordinates to your teammates!
+    usage: /<command>
+    aliases: [coords, c]
+  all:
+    description: Chat to everyone
+    usage: /<command>
+    aliases: [a]
