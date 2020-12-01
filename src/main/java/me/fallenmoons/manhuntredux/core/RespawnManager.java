@@ -1,6 +1,5 @@
 package me.fallenmoons.manhuntredux.core;
 
-import com.oracle.jrockit.jfr.EventDefinition;
 import me.fallenmoons.manhuntredux.Main;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,31 +34,31 @@ public class RespawnManager implements Listener {
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent e) {
         Player player = e.getPlayer();
-        if (!e.isBedSpawn() && e.getRespawnLocation().getWorld() != main.getCurrentWorld()) {
-            e.setRespawnLocation(main.getCurrentWorld().getSpawnLocation());
-        }
+//        if (!e.isBedSpawn() && e.getRespawnLocation().getWorld() != main.getCurrentWorld()) {
+//            e.setRespawnLocation(main.getCurrentWorld().getSpawnLocation());
+//        }
 
-        if (!e.isBedSpawn() && deadPlayers.containsKey(player)) {
-            if (deadPlayers.get(player).getWorld().getEnvironment() != World.Environment.NORMAL) {
-                deadPlayers.remove(player);
-                e.setRespawnLocation(main.getCurrentWorld().getSpawnLocation());
-            } else {
-//                player.sendMessage("Tried to spawn halfway");
-                Location spawn = main.getCurrentWorld().getSpawnLocation();
-                int x1 = spawn.getBlockX();
-                int z1 = spawn.getBlockZ();
-                Location death = deadPlayers.get(player);
-                int x2 = death.getBlockX();
-                int z2 = death.getBlockZ();
-
-                int xx = (x1+x2)/2;
-                int zz = (z1+z2)/2;
-                Location nLoc = new Location(main.getCurrentWorld(), xx, main.getCurrentWorld().getHighestBlockYAt(xx, zz), zz);
-
-                e.setRespawnLocation(nLoc);
-                deadPlayers.remove(player);
-            }
-        }
+//        if (!e.isBedSpawn() && deadPlayers.containsKey(player)) {
+//            if (deadPlayers.get(player).getWorld().getEnvironment() != World.Environment.NORMAL) {
+//                deadPlayers.remove(player);
+//                e.setRespawnLocation(main.getCurrentWorld().getSpawnLocation());
+//            } else {
+////                player.sendMessage("Tried to spawn halfway");
+//                Location spawn = main.getCurrentWorld().getSpawnLocation();
+//                int x1 = spawn.getBlockX();
+//                int z1 = spawn.getBlockZ();
+//                Location death = deadPlayers.get(player);
+//                int x2 = death.getBlockX();
+//                int z2 = death.getBlockZ();
+//
+//                int xx = (x1+x2)/2;
+//                int zz = (z1+z2)/2;
+//                Location nLoc = new Location(main.getCurrentWorld(), xx, main.getCurrentWorld().getHighestBlockYAt(xx, zz), zz);
+//
+//                e.setRespawnLocation(nLoc);
+//                deadPlayers.remove(player);
+//            }
+//        }
 
 
         if (teamManager.getTeamFromPlayer(player) == teamManager.getHunters()) {

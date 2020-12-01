@@ -6,7 +6,7 @@
 
     <groupId>me.fallenmoons</groupId>
     <artifactId>manhuntredux</artifactId>
-    <version>1.7</version>
+    <version>1.71</version>
     <packaging>jar</packaging>
 
     <name>ManhuntRedux</name>

@@ -1,5 +1,6 @@
 package me.fallenmoons.manhuntredux.core;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -8,29 +9,31 @@ import java.util.ArrayList;
 public class Team {
 
     private String teamName;
-    private ArrayList<Player> players;
     private ArrayList<String> playerNames;
     private ChatColor teamColor;
 
     public Team(String teamName, ChatColor teamColor) {
         this.teamName = teamName;
         this.teamColor = teamColor;
-        players = new ArrayList<Player>();
         playerNames = new ArrayList<String>();
     }
 
     public ArrayList<Player> getMembers() {
-        return players;
+        ArrayList<Player> members = new ArrayList<>();
+        for(String name : playerNames) {
+            members.add(Bukkit.getPlayer(name));
+        }
+        return members;
     }
 
     public ArrayList<String> getPlayerNames() { return playerNames; }
 
     public int getNumberOfMembers() {
-        return players.size();
+        return playerNames.size();
     }
 
     public void addMember(Player player) {
-        players.add(player);
+        playerNames.add(player.getName());
         player.setDisplayName(teamColor + player.getDisplayName() + ChatColor.WHITE);
         player.setPlayerListName(teamColor + player.getDisplayName() + ChatColor.WHITE);
         player.setPlayerListHeader(teamColor + teamName);
@@ -53,7 +56,6 @@ public class Team {
     }
 
     public void joinTeam(Player player) {
-        players.add(player);
         playerNames.add(player.getName());
         player.setDisplayName(teamColor + player.getDisplayName() + ChatColor.WHITE);
         player.setPlayerListName(teamColor + player.getDisplayName() + ChatColor.WHITE);
@@ -61,7 +63,6 @@ public class Team {
     }
 
     public void leaveTeam(Player player) {
-        players.remove(player);
         playerNames.remove(player.getName());
         player.setDisplayName(ChatColor.stripColor(player.getDisplayName()));
         player.setPlayerListName(ChatColor.stripColor(player.getDisplayName()));
@@ -69,11 +70,12 @@ public class Team {
     }
 
     public void clearTeam() {
-        for (Player p : players) {
+        for (String name : playerNames) {
+            Player p = Bukkit.getPlayer(name);
             p.setDisplayName(ChatColor.stripColor(p.getDisplayName()));
             p.setPlayerListName(ChatColor.stripColor(p.getDisplayName()));
             p.setPlayerListHeader("");
         }
-        players.clear();
+        playerNames.clear();
     }
 }

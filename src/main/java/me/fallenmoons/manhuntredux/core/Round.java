@@ -115,7 +115,11 @@ public class Round {
             p.playSound(p.getLocation(), Sound.UI_TOAST_IN, 100, 1);
 
             //Set up other things.
+            float yaw = p.getLocation().getYaw();
+            float pitch = p.getLocation().getPitch();
             p.teleport(p.getWorld().getSpawnLocation());
+            p.getLocation().setPitch(pitch);
+            p.getLocation().setYaw(yaw);
             p.setHealth(20);
             p.setFoodLevel(20);
             p.setExhaustion(0);
@@ -181,7 +185,7 @@ public class Round {
             countTask.cancel();
             countdownStarted = false;
             runnersCanMove = true;
-
+            roundStarted = true;
             for (Player p : teamManager.getRunners().getMembers()) {
                 for (PotionEffect pot : p.getActivePotionEffects()) {
                     p.removePotionEffect(pot.getType());

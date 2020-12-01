@@ -45,6 +45,7 @@ public class Compass implements Listener {
         if (isHunter == false) {
             return;
         }
+
         if (e.getHand() == EquipmentSlot.HAND) {
             if (p.getInventory().getItemInMainHand() != null) {
                 ItemStack i = p.getInventory().getItemInMainHand();
@@ -104,11 +105,8 @@ public class Compass implements Listener {
                                     trackerCompassMeta.setLodestoneTracked(false);
 
                                     if(!p.getWorld().getName().contains("_the_end") && players.get(num).getWorld().getName().contains("_the_end")) {
-//                                        System.out.println("Portal Location: " + portals.getPortalCoords(players.get(num).getName()));
                                         trackerCompassMeta.setLodestone(portals.getPortalCoords(players.get(num).getName()));
-//                                        System.out.println("In the end!");
                                     } else {
-//                                    System.out.println("Not in the end!");
                                         trackerCompassMeta.setLodestone(players.get(num).getLocation());
                                     }
                                 }
