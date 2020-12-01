@@ -2,6 +2,8 @@ package me.fallenmoons.manhuntredux;
 
 import me.fallenmoons.manhuntredux.core.*;
 import me.fallenmoons.manhuntredux.items.Compass;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -12,16 +14,20 @@ public final class Main extends JavaPlugin implements Listener {
     private TeamManager teamManager;
     private Round round;
     private PortalManager portals;
+    private World currentWorld;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
+
+        currentWorld = getServer().getWorlds().get(0);
 
         for (Player p : getServer().getOnlinePlayers()) {
             p.setDisplayName(p.getName());
             p.setPlayerListName(p.getName());
             p.setPlayerListHeader("");
         }
+
 
         //Create Team Manager
         teamManager = new TeamManager(this);
@@ -53,22 +59,12 @@ public final class Main extends JavaPlugin implements Listener {
     public Round getRound() {return round;}
 
     public PortalManager getPortals() {return portals;}
+
+    public World getCurrentWorld() {
+        return currentWorld;
+    }
+
+    public void setCurrentWorld(World currentWorld) {
+        this.currentWorld = currentWorld;
+    }
 }
-
-/*
-Commands:
-two teams
-hunter and hunted
-
-
-
-/hunteradd [player name] - adds to hunter team, gives tracking compass
-/huntedadd [player name] - add to hunted team
-
-/setcountdown [time]
-/setleadtime [time]
-
-
-
-
- */

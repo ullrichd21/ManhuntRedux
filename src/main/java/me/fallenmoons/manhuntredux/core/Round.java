@@ -36,8 +36,8 @@ public class Round {
     public Round(Main main) {
         this.main = main;
         this.teamManager = main.getTeamManager();
-        this.roundCountdown = 30;
-        this.roundLeadTime = 60;
+        this.roundCountdown = 10;
+        this.roundLeadTime = 30;
         this.roundStarted = false;
         this.runnersCanMove = true;
         this.huntersCanMove = true;
@@ -188,9 +188,7 @@ public class Round {
                 }
             }
 
-            if (roundLeadTime > 0) {
-                startLeadCountdown();
-            }
+            startLeadCountdown();
         }
     }
 

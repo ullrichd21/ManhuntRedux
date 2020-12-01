@@ -3,7 +3,7 @@ version: ${project.version}
 main: me.fallenmoons.manhuntredux.Main
 api-version: 1.16
 authors: [ FallenMoons ]
-description: Manhunt Redux - Hunters vs Runners (Special thanks to dancemidget1, Hjoll, Brightglow, ColinSmoke, treester, anageds, JamFlam)
+description: Manhunt Redux - Hunters vs Runners (Special thanks to dancemidget1, Hjoll, Brightglow, ColinSmoke, treester, anageds, JamFlam, VaptvrGaming)
 website: www.twitch.tv/fallenmoons
 commands:
   hunter:

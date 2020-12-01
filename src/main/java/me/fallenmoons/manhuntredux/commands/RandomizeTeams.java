@@ -29,27 +29,27 @@ public class RandomizeTeams implements CommandExecutor {
             }
             Random rand = new Random();
 
-            int numPlayers = main.getServer().getOnlinePlayers().size();
+//            int numPlayers = main.getServer().getOnlinePlayers().size();
 
             teamManager.clearTeams();
 
 
-            ArrayList<Player> playersLeft = new ArrayList<Player>();
+            ArrayList<Player> playersLeft = new ArrayList<>();
             for (Player p : main.getServer().getOnlinePlayers()) {
                 playersLeft.add(p);
             }
 
-            for(int i = -1; i <= playersLeft.size(); i++) {
-                sender.sendMessage("i = " + i);
+            int i = 0;
+            while(playersLeft.size() > 0) {
+//                sender.sendMessage("i = " + i);
+                i++;
+                Player p = playersLeft.get(rand.nextInt(playersLeft.size()));
                 if (i % 2 == 0) {
-                    Player p = playersLeft.get(rand.nextInt(playersLeft.size()));
                     teamManager.getRunners().addMember(p);
-                    playersLeft.remove(p);
                 } else {
-                    Player p = playersLeft.get(rand.nextInt(playersLeft.size()));
                     teamManager.getHunters().addMember(p);
-                    playersLeft.remove(p);
                 }
+                playersLeft.remove(p);
             }
 
             sender.sendMessage(ChatColor.GREEN + "Successfully randomized all teams!");

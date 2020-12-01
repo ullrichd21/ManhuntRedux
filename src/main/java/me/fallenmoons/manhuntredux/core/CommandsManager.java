@@ -2,6 +2,7 @@ package me.fallenmoons.manhuntredux.core;
 
 import me.fallenmoons.manhuntredux.Main;
 import me.fallenmoons.manhuntredux.commands.*;
+import org.bukkit.World;
 
 public class CommandsManager {
 
@@ -17,6 +18,7 @@ public class CommandsManager {
         main.getCommand("randomizeteams").setExecutor(new RandomizeTeams(main));
         main.getCommand("coordinates").setExecutor(new Coordinates(main));
         main.getCommand("all").setExecutor(new All(main));
+//        main.getCommand("newworld").setExecutor(new WorldCommand(main));
 
         //Autocomplete
         main.getCommand("hunter").setTabCompleter(new TabCompleter());

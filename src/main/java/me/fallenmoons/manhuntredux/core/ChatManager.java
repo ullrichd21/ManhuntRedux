@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.Iterator;
 import java.util.Set;
 
 public class ChatManager implements Listener {
@@ -27,17 +28,24 @@ public class ChatManager implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
 
-        Player sender = e.getPlayer();
-
+        Player sender = (Player) e.getPlayer();
+        System.out.println("Player Chat");
         if (teamManager.playerOnTeam(sender)) {
             Set<Player> recip = e.getRecipients();
+            Iterator<Player> it = recip.iterator();
             Team senderTeam = teamManager.getTeamFromPlayer(e.getPlayer());
-            String msg = e.getMessage();
-            for (Player p : recip) {
-                if (teamManager.getTeamFromPlayer(p) != senderTeam) {
-                    e.setCancelled(true);
+//            System.out.println("Player on team");
+            while(it.hasNext()) {
+                if (teamManager.getTeamFromPlayer(it.next()) != senderTeam) {
+                    it.remove();
                 }
             }
+//            for (Player p : e.getRecipients()) {
+//                if (teamManager.getTeamFromPlayer(p) != senderTeam) {
+//                    System.out.println(p.getName() + " cancelled");
+//                    e.getRecipients().remove(p);
+//                }
+//            }
 
 //            for (Player p : senderTeam.getMembers()) {
 ////                p.sendMessage("[" + senderTeam.getTeamColor() + sender.getName() + "] " + msg);
