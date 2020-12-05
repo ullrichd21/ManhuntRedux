@@ -36,8 +36,8 @@ public class Round {
     public Round(Main main) {
         this.main = main;
         this.teamManager = main.getTeamManager();
-        this.roundCountdown = 10;
-        this.roundLeadTime = 30;
+        this.roundCountdown = main.getConfigFile().getInt("countdown");
+        this.roundLeadTime = main.getConfigFile().getInt("leadtime");
         this.roundStarted = false;
         this.runnersCanMove = true;
         this.huntersCanMove = true;
@@ -95,6 +95,9 @@ public class Round {
 
     public void stopRound() {
         roundStarted = false;
+        teamManager.getRunners().clearTeam();
+        teamManager.getHunters().clearTeam();
+        main.getPortals().clearPortalCoords();
     }
 
     private void startCountdown() {

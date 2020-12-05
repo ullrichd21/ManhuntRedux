@@ -1,6 +1,7 @@
 package me.fallenmoons.manhuntredux.core;
 
 import me.fallenmoons.manhuntredux.Main;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,6 +41,8 @@ public class ChatManager implements Listener {
                     it.remove();
                 }
             }
+
+            e.setMessage(ChatColor.GRAY + "[TEAM] " + ChatColor.WHITE + e.getMessage());
 //            for (Player p : e.getRecipients()) {
 //                if (teamManager.getTeamFromPlayer(p) != senderTeam) {
 //                    System.out.println(p.getName() + " cancelled");

@@ -23,11 +23,11 @@ public class MovementManager implements Listener {
     public void onPlayerMove(PlayerMoveEvent e) {
         Player player = e.getPlayer();
 
-        if (teamManager.getTeamFromPlayer(player) == teamManager.getHunters() && round.isHuntersCanMove() == false) {
+        if (teamManager.getTeamFromPlayer(player) != null && teamManager.getTeamFromPlayer(player) == teamManager.getHunters() && round.isHuntersCanMove() == false) {
             e.setCancelled(true);
         }
 
-        if (teamManager.getTeamFromPlayer(player) == teamManager.getRunners() && round.isRunnersCanMove() == false) {
+        if (teamManager.getTeamFromPlayer(player) != null && teamManager.getTeamFromPlayer(player) == teamManager.getRunners() && round.isRunnersCanMove() == false) {
             e.setCancelled(true);
         }
     }

@@ -5,6 +5,7 @@ import me.fallenmoons.manhuntredux.items.Compass;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.boss.BossBar;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,10 +16,18 @@ public final class Main extends JavaPlugin implements Listener {
     private Round round;
     private PortalManager portals;
     private World currentWorld;
+    private FileConfiguration configFile;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
+
+        configFile = getConfig();
+        configFile.addDefault("countdown", 8);
+        configFile.addDefault("leadtime", 10);
+        configFile.options().copyDefaults(true);
+        saveConfig();
+
 
         currentWorld = getServer().getWorlds().get(0);
 
@@ -66,5 +75,9 @@ public final class Main extends JavaPlugin implements Listener {
 
     public void setCurrentWorld(World currentWorld) {
         this.currentWorld = currentWorld;
+    }
+
+    public FileConfiguration getConfigFile() {
+        return configFile;
     }
 }

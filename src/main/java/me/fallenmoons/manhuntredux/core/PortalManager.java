@@ -44,4 +44,8 @@ public class PortalManager {
             return null;
         }
     }
+
+    public void clearPortalCoords() {
+        endPlayers.clear();
+    }
 }

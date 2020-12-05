@@ -39,6 +39,8 @@ public class RoundCommand implements CommandExecutor {
             } else if (args[0].toLowerCase().equals("stop")) {
                 if (round.hasRoundStarted() == true) {
                     round.stopRound();
+                    sender.sendMessage(ChatColor.GREEN + "Round ended!");
+                    return true;
                 } else {
                     sender.sendMessage(ChatColor.RED + "No round started!");
                     return true;
@@ -58,6 +60,9 @@ public class RoundCommand implements CommandExecutor {
 
                 round.setRoundCountdown(Integer.parseInt(args[1]));
                 sender.sendMessage(ChatColor.GREEN + "Set round countdown to " + args[1] + " seconds.");
+
+                main.getConfigFile().set("countdown", num);
+                main.saveConfig();
                 return true;
             } else if (args[0].toLowerCase().equals("leadtime")) {
                 //Check if valid number...
@@ -70,6 +75,8 @@ public class RoundCommand implements CommandExecutor {
                 }
                 round.setRoundLeadTime(Integer.parseInt(args[1]));
                 sender.sendMessage(ChatColor.GREEN + "Set round lead time to " + args[1] + " seconds.");
+                main.getConfigFile().set("leadtime", num);
+                main.saveConfig();
                 return true;
             } else {
                 return false;

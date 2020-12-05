@@ -54,25 +54,31 @@ public class Compass implements Listener {
                     ArrayList<Player> players = teamManager.getTeamPlayers("runners");
                     int num = 0;
                     if (players.size() > 0) {
-                        if (p.isSneaking() && (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
-                            ItemMeta trackerMeta = i.getItemMeta();
-                            //Lore
-                            if (!trackerMeta.hasLore()) {
-                                List<String> trackerLore = new ArrayList<String>();
-                                trackerLore.add("0");
-                                trackerLore.add("Player Tracker");
-                                trackerMeta.setLore(trackerLore);
-                            } else {
-                                num = Integer.parseInt(trackerMeta.getLore().get(0));
-                            }
 
+                        ItemMeta trackerMeta = i.getItemMeta();
+                        //Lore
+                        if (!trackerMeta.hasLore()) {
+                            List<String> trackerLore = new ArrayList<String>();
+                            trackerLore.add("0");
+                            trackerLore.add("Player Tracker");
+                            trackerMeta.setLore(trackerLore);
+                        } else {
+                            num = Integer.parseInt(trackerMeta.getLore().get(0));
+                        }
+
+                        if (p.isSneaking() && (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
                             num += 1;
 
                             if (num >= players.size()) {
                                 num = 0;
                             }
 
-                            trackerMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + players.get(num).getDisplayName());
+                            if (players.get(num) == null || players.get(num).getLocation() == null) {
+                                cantTrackError(p);
+                                return;
+                            }
+
+                            trackerMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + players.get(num).getName());
                             trackerMeta.setLore(Arrays.asList(String.valueOf(num), "Player Tracker"));
 
                             CompassMeta trackerCompassMeta = null;
@@ -85,18 +91,12 @@ public class Compass implements Listener {
                             p.playSound(p.getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 1, 1);
                         } else {
                             if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                                ItemMeta trackerMeta = i.getItemMeta();
-                                //Lore
-                                if (!trackerMeta.hasLore()) {
-                                    List<String> trackerLore = new ArrayList<String>();
-                                    trackerLore.add("0");
-                                    trackerLore.add("Player Tracker");
-                                    trackerMeta.setLore(trackerLore);
-                                } else {
-                                    num = Integer.parseInt(trackerMeta.getLore().get(0));
+                                if (players.get(num) == null || players.get(num).getLocation() == null) {
+                                    cantTrackError(p);
+                                    return;
                                 }
 
-                                trackerMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + players.get(num).getDisplayName());
+                                trackerMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + players.get(num).getName());
                                 trackerMeta.setLore(Arrays.asList(String.valueOf(num), "Player Tracker"));
 
                                 CompassMeta trackerCompassMeta = null;
@@ -120,11 +120,15 @@ public class Compass implements Listener {
                             }
                         }
                     } else {
-                        p.sendMessage(ChatColor.RED + "Not enough runners to track!");
+                        cantTrackError(p);
                         return;
                     }
                 }
             }
         }
+    }
+
+    private void cantTrackError(Player p) {
+        p.sendMessage(ChatColor.RED + "Can't track!");
     }
 }

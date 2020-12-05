@@ -24,17 +24,13 @@ public class PlayerJoinManager implements Listener {
 
         for (String name : teamManager.getHunters().getPlayerNames()) {
             if (player.getName().equals(name)) {
-                if (!teamManager.getHunters().getMembers().contains(player)) {
-                    teamManager.getHunters().addMember(player);
-                }
+                teamManager.getHunters().addMember(player);
             }
         }
 
         for (String name : teamManager.getRunners().getPlayerNames()) {
             if (player.getName().equals(name)) {
-                if (!teamManager.getRunners().getMembers().contains(player)) {
-                    teamManager.getRunners().addMember(player);
-                }
+                teamManager.getRunners().addMember(player);
             }
         }
     }

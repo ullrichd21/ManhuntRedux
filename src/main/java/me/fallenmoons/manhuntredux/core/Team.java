@@ -33,7 +33,9 @@ public class Team {
     }
 
     public void addMember(Player player) {
-        playerNames.add(player.getName());
+        if (!playerNames.contains(player.getName())) {
+            playerNames.add(player.getName());
+        }
         player.setDisplayName(teamColor + player.getDisplayName() + ChatColor.WHITE);
         player.setPlayerListName(teamColor + player.getDisplayName() + ChatColor.WHITE);
         player.setPlayerListHeader(teamColor + teamName);

@@ -34,7 +34,7 @@ public class All implements CommandExecutor {
                 msg += " " + args[i];
             }
 
-            Bukkit.broadcastMessage("<" + player.getDisplayName() + ">" + msg);
+            Bukkit.broadcastMessage("<" + player.getDisplayName() + ">" + ChatColor.GREEN + " [ALL]" + ChatColor.WHITE + msg);
 
             return true;
         }
